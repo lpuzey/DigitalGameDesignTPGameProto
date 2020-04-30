@@ -20,7 +20,6 @@ var G = ( function () {
 	//The planes that each sprite exists on
 	var PLANE_CART = 2;
 	var PLANE_TP = 1;
-	var PLANE_CAR = 3;
 
 	//array of toilet paper
 	var TP = [];
@@ -85,6 +84,8 @@ var G = ( function () {
 
 								PS.color(PS.ALL,PS.ALL, PS.COLOR_RED);
 								PS.border (PS.ALL,PS.ALL, 0);
+
+								DB.send();
 
 								PS.statusText("GAME OVER!");
 								PS.audioPlay("fx_wilhelm");
@@ -182,6 +183,9 @@ var G = ( function () {
 			numInCart -= 1;
 			numInCar += 1;
 			drawTpInCar();
+
+			DB.send();
+
 			PS.audioPlay("fx_bloop");
 			PS.spriteSolidColor( sprite_cart, COLORS[ numInCart ] );
 			//PS.debug( numInCart + "\n" );
@@ -220,6 +224,9 @@ var G = ( function () {
 
 		PS.color(PS.ALL,PS.ALL, PS.COLOR_GREEN);
 		PS.border (PS.ALL,PS.ALL, 0);
+
+		DB.send();
+
 		PS.statusText("YOU WIN!");
 		PS.audioPlay("fx_tada");
 	}
@@ -230,6 +237,9 @@ var G = ( function () {
 			"use strict"; // Do not remove this directive!
 			var complete = function ( user ) {
 				PS.statusText( "Hi, " + user + "! Touch the number." );
+
+				PS.timerStart( 60, makeTP );
+				PS.timerStart( 6, moveTP );
 			};
 
 
@@ -264,11 +274,9 @@ var G = ( function () {
 			PS.color(0,18, PS.COLOR_RED);
 			PS.color(1,18, PS.COLOR_RED);
 
-			PS.timerStart( 60, makeTP );
 
-			PS.timerStart( 6, moveTP );
-
-			DB.active( true ); // change the call parameter to false to disable DB calls
+			// change the call parameter to false to disable DB calls
+			DB.active( true );
 			DB.init( "dbdemo", complete ); // Initialize the API
 
 		},
